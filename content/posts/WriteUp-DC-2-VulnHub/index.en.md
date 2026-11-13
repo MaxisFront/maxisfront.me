@@ -77,7 +77,7 @@ ping -c1 -R 192.168.1.176
 > - `-c1`: Specifies that only one packet should be sent and awaited.
 > - `-R (Record Route)`: The output shows the nodes a packet traversed.
 
-![Testing connection through Ping](./images/2_dc2-ping-traceroute.png)
+![Testing connection through Ping](images/2_dc2-ping-traceroute.png)
 
 The ICMP trace is successful. Thus, the TTL value is `64`, which could indicate a Linux/Unix system.
 
@@ -145,17 +145,17 @@ Before accessing the website in the browser, the machine\'s IP is
 temporarily mapped to the dc-2 page by modifying the `/etc/hosts` to
 resolve the page\'s address:
 
-![Adding dc-2 to the /etc/hosts file](./images/5_dc2-map-etc-hosts.png)
+![Adding dc-2 to the /etc/hosts file](images/5_dc2-map-etc-hosts.png)
 
 Before accessing the site via the browser, we perform an enumeration of
 addresses within the website:
 
-![Using gobuster to enumerate URL paths](./images/6_dc2-gobuster-urls.png)
+![Using gobuster to enumerate URL paths](images/6_dc2-gobuster-urls.png)
 
 We observe that among the identified addresses there is `/wp-admin`, so
 we access it via the browser to view the administration panel.
 
-![Wordpress Administration Panel](./images/7_dc2-admin-panel.png)
+![Wordpress Administration Panel](images/7_dc2-admin-panel.png)
 
 Although the user `admin` exists, it was not possible to access the panel without valid credentials. Therefore, it was decided to use `curl` to list the users in the system:
 
@@ -163,7 +163,7 @@ Although the user `admin` exists, it was not possible to access the panel withou
 for i in {0..10}; do curl -si "http://dc-2/?author=$i" | grep "author/"; done
 ```
 
-![Enumerating users through the Curl command](./images/8_dc2-curl-users-enumeration.png)
+![Enumerating users through the Curl command](images/8_dc2-curl-users-enumeration.png)
 
 > Another way to list potential users is by querying the address
 > `/?rest_route=/wp/v2/users/`, taking advantage of the `REST API`
@@ -208,7 +208,7 @@ system through various methods `DC-2`.
 After obtaining the dictionary, we used a tool such as `hydra` or
 `Caido` to automate the credential testing phase:
 
-![User enumeration through the 'Caido' tool](./images/9_dc2-enum-users-jerry-and-tom.png)
+![User enumeration through the 'Caido' tool](images/9_dc2-enum-users-jerry-and-tom.png)
 
 > - `Caido`: Web auditing tool. Intercepts, modifies, and manages HTTP/HTTPS traffic in real-time. 
 > - `HTTPQL`: Query language used by Caido. Allows queries with logical operators (AND or OR), facilitating tasks like filtering server responses.
@@ -219,7 +219,7 @@ We can see that `Caido` received the response code `302 (Found)`. for
 Using the credentials obtained, we were able to access the
 administration panel.
 
-![WordPress administration panel successful access](./images/10_dc2-administration-panel-as-jerry.png)
+![WordPress administration panel successful access](images/10_dc2-administration-panel-as-jerry.png)
 
 Despite having access to the panel, we were unable to identify outdated
 *plugins*, confidential information, or notices from the system
@@ -239,7 +239,7 @@ ssh tom@192.168.1.176
 
 > - `SSH`: Secure Shell is a service for secure remote access to servers and devices.
 
-![SSH access with tom credentials](./images/11_dc2-ssh-user-tom.png)
+![SSH access with tom credentials](images/11_dc2-ssh-user-tom.png)
 
 When attempting to execute commands such as `groups` or `sudo -l` we get
 an error `-rbash: ... command not found`. This indicates that we are
@@ -255,7 +255,7 @@ echo $SHELL
 ls -R -la usr/bin # Inside the "/home" user directory
 ```
 
-![Verification of rbash and listing our commands](./images/12_dc2-symbolic-links-identification.png)
+![Verification of rbash and listing our commands](images/12_dc2-symbolic-links-identification.png)
 
  It is possible to observe that most of this `symlinks` (Equivalent to a
 `Windows' shortcut`) can lead to escaping the `rbash`
@@ -282,7 +282,7 @@ su jerry # Password: adipiscing
 
 We again observed credential reuse. Now we try to list -if they exist- the commands we can execute with root privileges:
 
-![Command that Jerry can run as sudo](./images/13_dc2-command-as-sudo.png)
+![Command that Jerry can run as sudo](images/13_dc2-command-as-sudo.png)
 
 We observe that the user `jerry` has administrator permissions to
 execute the `git` binary, a tool used for version control.
@@ -297,7 +297,7 @@ sudo git -p help config # Abrirá un paginado
 
 > - `-p help config`: Git launches a pager as the root user (like `less`) to view detailed help for the config command.
 
-![Bash session as the user root](./images/14_dc2-privilege-escalation.png)
+![Bash session as the user root](images/14_dc2-privilege-escalation.png)
 
 We now have a bash session as the user `root`. As a final check, we try
 to read the flag located in the directory `/root`:
