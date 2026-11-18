@@ -1,0 +1,55 @@
+# Navigation
+mainNavigation: "Navegación Principal"
+footerNavigation: "Navegación del Footer"
+selectLanguage: "Seleccionar Lenguaje"
+
+home: "awdawd"
+# Theme
+toggleTheme: "Cambiar tema"
+themeLight: "Modo claro"
+themeDark: "Modo oscuro"
+themeAuto: "Tema del sistema"
+
+# Content
+latestPosts: "Últimas Publicaciones"
+recentPosts: "Publicaciones Recientes"
+relatedPosts: "Publicaciones Relacionadas"
+noPosts: "No se han encotrado publicaciones."
+
+# Taxonomy
+tags: "Tags"
+categories: "Categorías"
+archive: "Archivo"
+links: "Links"
+
+# Reading
+minRead: "Minutos de lectura"
+
+# Share
+share: "Compartir"
+
+# Pagination
+pagination: "Paginación"
+previous: "Previo"
+next: "Siguiente"
+previousPage: "Anterior Página"
+nextPage: "Siguiente Página"
+page: "Página"
+
+# 404
+pageNotFound: "The page you're looking for doesn't exist."
+backToHome: "Back to Home"
+
+# Sidebar Custom Modules
+aboutMe: "About Me"
+authorRole: "Developer & Blogger"
+authorBio: "Welcome to my blog! I write about web development, Hugo, and open source projects."
+followMe: "Follow Me"
+
+# Sidebar
+showMore: "Ver más"
+showLess: "Ver menos"
+viewAll: "Mostrar todos"
+
+# Footer
+poweredBy: "Creado con"
