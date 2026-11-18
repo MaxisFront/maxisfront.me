@@ -14,7 +14,7 @@ tags:
 categories:
   - WriteUps
 author: MaxisFront
-description: "Máquina DC:1 de VulnHub | Desafío hecho por: DCAU | Serie: DC"
+description: "Máquina DC:1 de VulnHub | Desafío creado por: DCAU | Serie: DC"
 image: Drupal_Logo.png
 hideReadingTime: false
 ---
