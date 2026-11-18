@@ -13,7 +13,7 @@ tags:
 - Web
 - Caido
 - Path-traversal
-- GTFObins
+- GFTOBins
 - SUID
 - CVE-2024-48990
 title: 'WriteUp: Conversor | HTB'

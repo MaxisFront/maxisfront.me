@@ -3,7 +3,7 @@ title: "WriteUp: DC-2 | VulnHub"
 date: 2026-03-25
 draft: false
 tags:
-  - VulHub
+  - VulnHub
   - Linux
   - Web
   - WordPress

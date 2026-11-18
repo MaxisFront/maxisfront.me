@@ -11,7 +11,7 @@ tags:
   - CVE-2025-2304
   - S3
   - CVE-2024-46987
-  - GTFObins
+  - GFTOBins
   - Facter
 categories:
   - WriteUps
