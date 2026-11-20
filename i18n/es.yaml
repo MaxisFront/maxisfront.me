@@ -3,7 +3,7 @@ mainNavigation: "Navegación Principal"
 footerNavigation: "Navegación del Footer"
 selectLanguage: "Seleccionar Lenguaje"
 
-home: "awdawd"
+home: "Inicio"
 # Theme
 toggleTheme: "Cambiar tema"
 themeLight: "Modo claro"
@@ -37,14 +37,14 @@ nextPage: "Siguiente Página"
 page: "Página"
 
 # 404
-pageNotFound: "The page you're looking for doesn't exist."
-backToHome: "Back to Home"
+pageNotFound: "La página que buscabas no existe."
+backToHome: "Regresar a Inicio"
 
 # Sidebar Custom Modules
-aboutMe: "About Me"
-authorRole: "Developer & Blogger"
+aboutMe: "Acerca de Mi"
+authorRole: "Desarrollador y entusiasta del Red Team"
 authorBio: "Welcome to my blog! I write about web development, Hugo, and open source projects."
-followMe: "Follow Me"
+followMe: "Sígueme"
 
 # Sidebar
 showMore: "Ver más"
